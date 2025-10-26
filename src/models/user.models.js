@@ -5,7 +5,8 @@ const userSchema = mongoose.Schema({
     fullName: { type: String, required: true },
     email: { type: String, required: true, trim: true },
     pasword: { type: String, required: true, trim: true },
-    avatar: {type : String}
+    avatar: {type : String},
+    coverImage: {type : String}
 })
 
 export const User = mongoose.model("User", userSchema)
