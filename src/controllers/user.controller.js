@@ -9,7 +9,7 @@ const userRegister = asyncHandler(async (req, res) => {
         const { fullName, email, username, password, } = req.body;
 
         // validation
-        if (!fullName || !email || !username || password) {
+        if (!fullName || !email || !username || !password) {
             throw new ApiError(400, "All fields are mandatory")
         }
 
@@ -21,8 +21,19 @@ const userRegister = asyncHandler(async (req, res) => {
         const avatarLocalPath = req.files?.avatar[0]?.path;
         const coverLocalPath = req.files?.coverImage[0]?.path;
 
-        const avatar = await uploadOnCloudinary(avatarLocalPath);
-        const coverImage = await uploadOnCloudinary(coverLocalPath);
+        let avatar = null;
+        let coverImage = null;
+
+
+        if (avatarLocalPath) {
+            avatar = await uploadOnCloudinary(avatarLocalPath);
+        }
+        if (coverLocalPath) {
+            coverImage = await uploadOnCloudinary(coverLocalPath);
+        }
+
+        const user = await User.create({ fullName, email, username: username.toLowerCase(), password, avatar: avatar?.url || "", coverImage: coverImage?.url || "" })
+
     } catch (error) {
         throw new ApiError(400, "Failed to register user")
     }
