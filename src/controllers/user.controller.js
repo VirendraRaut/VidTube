@@ -16,6 +16,8 @@ const userRegister = asyncHandler(async (req, res) => {
         if (existingUser) {
             throw new ApiError(400, "User exists with already email or username")
         }
+
+        req.files?.avatar[0]
     } catch (error) {
         throw new ApiError(400, "Failed to register user")
     }
