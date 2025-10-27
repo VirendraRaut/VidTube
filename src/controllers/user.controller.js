@@ -2,7 +2,7 @@ import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import uploadOnCloudinary from "../utils/cloudinary";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 const userRegister = asyncHandler(async (req, res) => {
     try {
@@ -21,7 +21,8 @@ const userRegister = asyncHandler(async (req, res) => {
         const avatarLocalPath = req.files?.avatar[0]?.path;
         const coverLocalPath = req.files?.coverImage[0]?.path;
 
-        uploadOnCloudinary
+        const avatar = await uploadOnCloudinary(avatarLocalPath);
+        const coverImage = await uploadOnCloudinary(coverLocalPath);
     } catch (error) {
         throw new ApiError(400, "Failed to register user")
     }
