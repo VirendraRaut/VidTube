@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import healthCheckRouter from "./src/routes/healthCheck.route.js";
-import userRouter from "./src/controllers/user.controller.js"
+import userRouter from "./src/routes/user.routes.js"
 
 const app = express();
 
