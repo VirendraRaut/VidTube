@@ -36,6 +36,10 @@ const userRegister = asyncHandler(async (req, res) => {
 
         const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
+        if (!createdUser) {
+            throw new ApiError(400, "Failed to register user")
+        }
+
     } catch (error) {
         throw new ApiError(400, "Failed to register user")
     }
