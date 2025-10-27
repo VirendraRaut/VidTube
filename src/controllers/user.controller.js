@@ -2,7 +2,7 @@ import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import uploadOnCloudinary from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
 
 const userRegister = asyncHandler(async (req, res) => {
 
@@ -32,17 +32,27 @@ const userRegister = asyncHandler(async (req, res) => {
         coverImage = await uploadOnCloudinary(coverLocalPath);
     }
 
-    const user = await User.create({ fullName, email, username: username.toLowerCase(), password, avatar: avatar?.url || "", coverImage: coverImage?.url || "" })
+    try {
+        const user = await User.create({ fullName, email, username: username.toLowerCase(), password, avatar: avatar?.url || "", coverImage: coverImage?.url || "" })
 
-    const createdUser = await User.findById(user._id).select("-password -refreshToken");
+        const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
-    if (!createdUser) {
-        throw new ApiError(400, "Failed to register user")
+        if (!createdUser) {
+            throw new ApiError(400, "Failed to register user")
+        }
+
+        return res
+            .status(201)
+            .json(new ApiResponse(201, createdUser, "User registered successfully"));
+    } catch (error) {
+        // ⚠️ Clean up uploaded images if user creation fails
+        if (avatar?.public_id) await deleteFromCloudinary(avatar.public_id);
+        if (coverImage?.public_id) await deleteFromCloudinary(coverImage.public_id);
+
+        console.log("❌ Failed to register user:", error.message);
+        throw new ApiError(500, "Failed to register user");
+
     }
-
-    return res
-        .status(201)
-        .json(new ApiResponse(201, createdUser, "User registered successfully"));
 
 })
 
