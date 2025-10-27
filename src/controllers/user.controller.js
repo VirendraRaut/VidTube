@@ -34,6 +34,8 @@ const userRegister = asyncHandler(async (req, res) => {
 
         const user = await User.create({ fullName, email, username: username.toLowerCase(), password, avatar: avatar?.url || "", coverImage: coverImage?.url || "" })
 
+        const createdUser = await User.findById(user._id).select("-password")
+
     } catch (error) {
         throw new ApiError(400, "Failed to register user")
     }
