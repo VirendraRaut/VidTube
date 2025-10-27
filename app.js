@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import healthCheckRouter from "./src/routes/healthCheck.route.js";
+import userRouter from "./src/controllers/user.controller.js"
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.use(express.static("public"))
 
 // routes
 app.use("/api/v1/health-check", healthCheckRouter)
+app.use("/api/v1/users", userRouter)
 
 export { app };
