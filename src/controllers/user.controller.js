@@ -40,8 +40,12 @@ const userRegister = asyncHandler(async (req, res) => {
             throw new ApiError(400, "Failed to register user")
         }
 
+        await createdUser.save();
+
+        return new ApiResponse(200, "User registered successfully", { createdUser })
+
     } catch (error) {
-        throw new ApiError(400, "Failed to register user")
+        throw new ApiError(400, "Failed to register user", error)
     }
 })
 
