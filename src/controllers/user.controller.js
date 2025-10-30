@@ -261,6 +261,14 @@ const userChannelProfile = async (req, res) => {
                     foreignField: "channel",
                     as: "subscribers"
                 }
+            }, 
+            {
+                $lookup:{
+                    from: "subscriptions",
+                    localField: "_id",
+                    foreignField: "subscriber",
+                    as: "subscribedTo"
+                }
             }
         ]);
     } catch (error) {
