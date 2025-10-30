@@ -252,10 +252,20 @@ const userChannelProfile = async (req, res) => {
         if (!username) {
             throw new ApiError(404, "User not found");
         }
+        const channel = await User.aggregate([
+            { $match: { username: username.toLowerCase() } },
+            {
+                $lookup:{
+                    from: "subscribptions",
+                    localField: "_id",
+                    foreignField: "channel",
+                    as: "subscribers"
+                }
+            }
+        ]);
     } catch (error) {
         console.log(400, "Error in user channel profile");
         return res.status(400).json({ success: false, message: "Failed to get user channel profile" });
-
     }
 }
 
