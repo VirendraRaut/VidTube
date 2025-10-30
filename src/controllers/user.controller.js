@@ -186,9 +186,11 @@ const getCurrentUser = async (req, res) => {
 const updateAccountDetails = async (req, res) => {
     const { email, username } = req.body;
     if (!email || !username) {
-            console.log(400, "Email and Username is required");
-            return res.status(400).json({ success: false, message: "Email and Username is required" });
-        }
+        console.log(400, "Email and Username is required");
+        return res.status(400).json({ success: false, message: "Email and Username is required" });
+    }
+
+    const user = await User.findByIdAndUpdate(req.user._id, { $set: { fullName, email: email, } }, { new: true }).select("-password, refreshToken")
 }
 
 export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser }
