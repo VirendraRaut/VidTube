@@ -246,6 +246,15 @@ const updateCoverImage = async (req, res) => {
     }
 }
 
+const userChannelProfile = async (req, res) => {
+    try {
+        
+    } catch (error) {
+         console.log(400, "Error in user channel profile");
+        return res.status(400).json({ success: false, message: "Failed to get user channel profile" });
+
+    }
+}
 
 
 export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage }

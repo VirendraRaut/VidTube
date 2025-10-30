@@ -1,5 +1,5 @@
 import express from "express"
-import { loginUser, logout, userRegister } from "../controllers/user.controller.js"
+import { changeCurrentPassword, getCurrentUser, loginUser, logout, updateAccountDetails, updateAvatar, updateCoverImage, userRegister } from "../controllers/user.controller.js"
 import { upload } from "../middlewares/multer.js";
 import { verifyJWT } from "../middlewares/auth.js";
 
@@ -16,5 +16,9 @@ userRouter.post(
 
 userRouter.post("/login", loginUser);
 userRouter.post("/logout", verifyJWT, logout);
+userRouter.post("/curret-password", changeCurrentPassword);
+userRouter.post("/update-account", updateAccountDetails);
+userRouter.post("/change-avatar", updateAvatar);
+userRouter.post("/change-coverImae", updateCoverImage);
 
 export default userRouter;
