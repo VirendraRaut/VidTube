@@ -183,4 +183,8 @@ const getCurrentUser = async (req, res) => {
     }
 }
 
-export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword }
+const updateAccountDetails = async (req, res) => {
+    const { email } = req.body;
+}
+
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser }
