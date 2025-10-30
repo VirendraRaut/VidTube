@@ -223,4 +223,29 @@ const updateAvatar = async (req, res) => {
     }
 }
 
+
+const updateCoverImage = async (req, res) => {
+    try {
+        const { coverImageLocalPath } = req.file?.path;
+        if (!coverImageLocalPath) {
+            console.log(400, "Select image first");
+            return res.status(400).json({ success: false, message: "Select image first" });
+        }
+        const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+        if (coverImage?.url) {
+            console.log(400, "Something went wrong");
+            return res.status(400).json({ success: false, message: "Something went wrong" });
+        }
+
+        const user = await User.findByIdAndUpdate(req.user._id, { $set: { coverImage: coverImage.url } }, { new: true })
+
+        return res.status(200).json({ success: true, message: "Avatar updated successfully", user })
+    } catch (error) {
+        console.log(400, "Error in update avatar");
+        return res.status(400).json({ success: false, message: "Failed to update avatar" });
+    }
+}
+
+
+
 export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar }
