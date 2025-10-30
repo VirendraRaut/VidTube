@@ -126,8 +126,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             httpOnly: true, secure: process.env.NODE_ENV === "production"
         }
         const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshToken(user._id);
+
+        return res
+            .status(201).cookie("accessToken:", accessToken, options).cookie("refreshToken:", refreshToen, options)
+            .json(new ApiResponse(201, { accessToken, refreshToken: newRefreshToken }, "User loggedIn successfully"));
     } catch (error) {
-         throw new ApiError(500, "Something went wrong");
+        throw new ApiError(500, "Something went wrong");
     }
 })
 
