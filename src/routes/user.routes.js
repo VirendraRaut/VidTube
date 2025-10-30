@@ -1,5 +1,5 @@
 import express from "express"
-import { userRegister } from "../controllers/user.controller.js"
+import { loggedInUser, userRegister } from "../controllers/user.controller.js"
 import { upload } from "../middlewares/multer.js";
 
 const userRouter = express.Router();
@@ -12,5 +12,7 @@ userRouter.post(
   ]),
   userRegister
 );
+
+userRouter.post("/login", loggedInUser);
 
 export default userRouter;
