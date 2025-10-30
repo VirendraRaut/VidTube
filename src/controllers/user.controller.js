@@ -92,6 +92,9 @@ const loginUser = asyncHandler(async (req, res) => {
     const {accessToken, refreshToen} = await generateAccessAndRefreshToken(user._id);
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+     if (!loggedInUser) {
+            throw new ApiError(500, "Something went wrong, please try again laten");
+        }
 })
 
 export { userRegister }
