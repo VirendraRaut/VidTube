@@ -184,7 +184,11 @@ const getCurrentUser = async (req, res) => {
 }
 
 const updateAccountDetails = async (req, res) => {
-    const { email } = req.body;
+    const { email, username } = req.body;
+    if (!email || !username) {
+            console.log(400, "Email and Username is required");
+            return res.status(400).json({ success: false, message: "Email and Username is required" });
+        }
 }
 
 export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser }
