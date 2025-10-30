@@ -152,9 +152,18 @@ const logout = asyncHandler(async (req, res) => {
 const changeCurrentPassword = async (req, res) => {
     try {
         const { oldPassword, newPassword } = req.body;
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+        const isPasswordCorrect = user.isPasswordCorrect(oldPassword);
+         if (!isPasswordCorrect) {
+            throw new ApiError(400, "Invalid password");
+        }
+        user.password = newPassword;
     } catch (error) {
         console.log("Error in change current password", error);
-        return res.status(200).json({ success: false, message: "Failed to changed password" })
+        return res.status(500).json({ success: false, message: "Failed to changed password" })
     }
 }
 
