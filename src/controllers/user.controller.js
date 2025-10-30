@@ -144,9 +144,18 @@ const logout = asyncHandler(async (req, res) => {
         httpOnly: true, secure: process.env.NODE_ENV === "production"
     }
 
-     return res
+    return res
         .status(201).cookie("accessToken", options).cookie("refreshToken", options)
         .json(new ApiResponse(201, "User loggedOut successfully"));
 })
+
+const changeCurrentPassword = async (req, res) => {
+    try {
+
+    } catch (error) {
+        console.log("Error in change current password", error);
+        return res.status(200).json({ success: false, message: "Failed to changed password" })
+    }
+}
 
 export { userRegister, loginUser, refreshAccessToken, logout }
