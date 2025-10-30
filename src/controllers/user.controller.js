@@ -140,6 +140,13 @@ const logout = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(404, "User not found");
     }
+    const options = {
+        httpOnly: true, secure: process.env.NODE_ENV === "production"
+    }
+
+     return res
+        .status(201).cookie("accessToken", options).cookie("refreshToken", options)
+        .json(new ApiResponse(201, "User loggedOut successfully"));
 })
 
 export { userRegister, loginUser, refreshAccessToken, logout }
