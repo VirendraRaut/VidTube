@@ -255,22 +255,30 @@ const userChannelProfile = async (req, res) => {
         const channel = await User.aggregate([
             { $match: { username: username.toLowerCase() } },
             {
-                $lookup:{
+                $lookup: {
                     from: "subscribptions",
                     localField: "_id",
                     foreignField: "channel",
                     as: "subscribers"
                 }
-            }, 
+            },
             {
-                $lookup:{
+                $lookup: {
                     from: "subscriptions",
                     localField: "_id",
                     foreignField: "subscriber",
                     as: "subscribedTo"
                 }
+            },
+            {
+                $addFields: {
+                    subscribersCount: { $size: "$subscribers" },
+                    subscribedToCount: { $size: "$subscribedTo" }
+                }
             }
         ]);
+
+
     } catch (error) {
         console.log(400, "Error in user channel profile");
         return res.status(400).json({ success: false, message: "Failed to get user channel profile" });
