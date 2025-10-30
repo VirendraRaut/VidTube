@@ -242,7 +242,7 @@ const updateCoverImage = async (req, res) => {
         return res.status(200).json({ success: true, message: "Cover image updated successfully", user })
     } catch (error) {
         console.log(400, "Error in update avatar");
-        return res.status(400).json({ success: false, message: "Failed to update avatar" });
+        return res.status(400).json({ success: false, message: "Failed to update cover image" });
     }
 }
 
