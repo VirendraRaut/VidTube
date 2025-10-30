@@ -127,7 +127,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         }
         const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshToken(user._id);
     } catch (error) {
-
+         throw new ApiError(500, "Something went wrong");
     }
 })
 
