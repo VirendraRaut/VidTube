@@ -105,7 +105,10 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
-    const {refreshToken} = req.cookies.refreshToken || req.body.refreshToken;
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+     if (!incomingRefreshToken) {
+            throw new ApiError(404, "Refresh Token is required");
+        }
 
 })
 
