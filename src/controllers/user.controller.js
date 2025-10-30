@@ -95,6 +95,9 @@ const loginUser = asyncHandler(async (req, res) => {
      if (!loggedInUser) {
             throw new ApiError(500, "Something went wrong, please try again laten");
         }
+        const options = {
+            httpOnly: true, secure: process.env.NODE_ENV === "production"
+        }
 })
 
 export { userRegister }
