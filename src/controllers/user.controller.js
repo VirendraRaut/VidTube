@@ -214,7 +214,7 @@ const updateAvatar = async (req, res) => {
             return res.status(400).json({ success: false, message: "Something went wrong" });
         }
 
-        const user = await User.findByIdAndUpdate(req.user._id, { $set: { avatar: avatar.url } }, { new: true })
+        const user = await User.findByIdAndUpdate(req.user._id, { $set: { avatar: avatar.url } }, { new: true }).select("-password, refreshToken")
 
         return res.status(200).json({ success: true, message: "Avatar updated successfully", user })
     } catch (error) {
@@ -237,7 +237,7 @@ const updateCoverImage = async (req, res) => {
             return res.status(400).json({ success: false, message: "Something went wrong" });
         }
 
-        const user = await User.findByIdAndUpdate(req.user._id, { $set: { coverImage: coverImage.url } }, { new: true })
+        const user = await User.findByIdAndUpdate(req.user._id, { $set: { coverImage: coverImage.url } }, { new: true }).select("-password, refreshToken")
 
         return res.status(200).json({ success: true, message: "Cover image updated successfully", user })
     } catch (error) {
