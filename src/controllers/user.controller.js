@@ -135,4 +135,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 })
 
-export { userRegister, loginUser }
+const logout = asyncHandler(async (req, res) => {
+    const user = await User.findByIdAndUpdate(req.user._id, { refreshToken: "" });
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+})
+
+export { userRegister, loginUser, refreshAccessToken }
