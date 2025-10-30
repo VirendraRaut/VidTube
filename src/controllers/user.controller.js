@@ -56,4 +56,21 @@ const userRegister = asyncHandler(async (req, res) => {
 
 })
 
+const generateAccessAndRefreshToken = async (userId) => {
+   try {
+     const user = await User.findById(userId);
+     if (!user) {
+         throw new ApiError(404, "User not found");
+     }
+     const accessToken = user.generateAccessToken();
+     const refreshToen = user.generateRefreshToken();
+ 
+     user.refreshToen = refreshToen;
+     await user.save({ validateBeforeSave: false });
+     return {accessToken, refreshToen}
+   } catch (error) {
+    throw new ApiError(500, "Failed to generate access or refresh token");
+   }
+}
+
 export { userRegister }
