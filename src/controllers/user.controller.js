@@ -239,7 +239,7 @@ const updateCoverImage = async (req, res) => {
 
         const user = await User.findByIdAndUpdate(req.user._id, { $set: { coverImage: coverImage.url } }, { new: true })
 
-        return res.status(200).json({ success: true, message: "Avatar updated successfully", user })
+        return res.status(200).json({ success: true, message: "Cover image updated successfully", user })
     } catch (error) {
         console.log(400, "Error in update avatar");
         return res.status(400).json({ success: false, message: "Failed to update avatar" });
