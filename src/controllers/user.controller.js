@@ -260,4 +260,4 @@ const userChannelProfile = async (req, res) => {
 }
 
 
-export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage }
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage, userChannelProfile }
