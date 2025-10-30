@@ -129,7 +129,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         return res
             .status(201).cookie("accessToken:", accessToken, options).cookie("refreshToken:", refreshToen, options)
-            .json(new ApiResponse(201, { accessToken, refreshToken: newRefreshToken }, "User loggedIn successfully"));
+            .json(new ApiResponse(201, { accessToken, refreshToken: newRefreshToken }, "Access and Refresh Token generated successfully"));
     } catch (error) {
         throw new ApiError(500, "Something went wrong");
     }
