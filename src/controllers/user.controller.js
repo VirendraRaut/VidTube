@@ -223,4 +223,4 @@ const updateAvatar = async (req, res) => {
     }
 }
 
-export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails }
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar }
