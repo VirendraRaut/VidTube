@@ -305,5 +305,80 @@ const getUserChannelProfile = async (req, res) => {
     }
 }
 
+const getWatchHistory = async (req, res) => {
+    try {
+        const userId = req.user?._id;
 
-export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage, userChannelProfile }
+        if (!userId) {
+            throw new ApiError(401, "Unauthorized user");
+        }
+
+        const user = await User.aggregate([
+            {
+                $match: { _id: userId }
+            },
+            {
+                $lookup: {
+                    from: "videos", // Assuming your video collection name
+                    localField: "watchHistory",
+                    foreignField: "_id",
+                    as: "watchHistory",
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: "users",
+                                localField: "owner",
+                                foreignField: "_id",
+                                as: "owner",
+                                pipeline: [
+                                    {
+                                        $project: {
+                                            fullName: 1,
+                                            username: 1,
+                                            avatar: 1
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            $addFields: {
+                                owner: { $first: "$owner" }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1,
+                    watchHistory: 1
+                }
+            }
+        ]);
+
+        if (!user || user.length === 0) {
+            throw new ApiError(404, "User not found");
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User watch history fetched successfully",
+            watchHistory: user[0].watchHistory
+        });
+
+    } catch (error) {
+        console.error("Error in getWatchHistory:", error.message);
+        return res.status(400).json({
+            success: false,
+            message: "Failed to get user watch history",
+            error: error.message,
+        });
+    }
+};
+
+
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage, getUserChannelProfile }
