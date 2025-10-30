@@ -88,6 +88,8 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!isPasswordCorrect) {
             throw new ApiError(400, "Invalid crendentials");
         }
+
+    const {accessToken, refreshToen} = await generateAccessAndRefreshToken(user._id)
 })
 
 export { userRegister }
