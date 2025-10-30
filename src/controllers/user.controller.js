@@ -169,5 +169,18 @@ const changeCurrentPassword = async (req, res) => {
         return res.status(500).json({ success: false, message: "Failed to changed password" })
     }
 }
+const getCurrentUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+        return res.status(200).json({ success: true, message: "Current User", user })
+    } catch (error) {
+        console.log(400, "Error in get current user");
+        return res.status(400).json({ success: false, message: "Failed to get current user" });
 
-export { userRegister, loginUser, refreshAccessToken, logout }
+    }
+}
+
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword }
