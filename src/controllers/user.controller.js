@@ -204,7 +204,7 @@ const updateAccountDetails = async (req, res) => {
 const updateAvatar = async (req, res) => {
     try {
         const { avatarLocalPath } = req.file?.path;
-        if (!image) {
+        if (!avatarLocalPath) {
             console.log(400, "Select image first");
             return res.status(400).json({ success: false, message: "Select image first" });
         }
