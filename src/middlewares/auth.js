@@ -9,7 +9,10 @@ export const verifyJWT = async (req, _, next) => {
         }
         const decodedToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-        await User.findbyId(decodedToken?._id).select("-password -refreshToken")
+       const user = await User.findbyId(decodedToken?._id).select("-password -refreshToken");
+        if (!user) {
+            throw new ApiError(404, "Unauthorized access");
+        }
     } catch (error) {
         console.log("", error);
         return res.status(500).json({ success: false, message: "" })
