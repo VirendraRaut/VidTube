@@ -246,7 +246,7 @@ const updateCoverImage = async (req, res) => {
     }
 }
 
-const userChannelProfile = async (req, res) => {
+const getUserChannelProfile = async (req, res) => {
     try {
         const { username } = req.params;
         if (!username) {
@@ -273,11 +273,31 @@ const userChannelProfile = async (req, res) => {
             {
                 $addFields: {
                     subscribersCount: { $size: "$subscribers" },
-                    subscribedToCount: { $size: "$subscribedTo" }
+                    subscribedToCount: { $size: "$subscribedTo" },
+                    isSubscribed: {
+                        $cond: [{ $in: [req.user._id, "$subscribers.subscriber"] }, true, false]
+                    }
+                }
+            },
+            {// project only necessary fields
+                $project: {
+                    fullName: 1,
+                    username: 1,
+                    email: 1,
+                    avatar: 1,
+                    coverImage: 1,
+                    subscribersCount: 1,
+                    subscribedToCount: 1,
+                    isSubscribed: 1
                 }
             }
         ]);
 
+        if (!channel || channel.length === 0) {
+            throw new ApiError(404, "Channel not found");
+        }
+
+        return res.status(200).json({ success: true, message: "User channel profile", channel: channel[0] })
 
     } catch (error) {
         console.log(400, "Error in user channel profile");
