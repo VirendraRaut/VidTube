@@ -162,6 +162,8 @@ const changeCurrentPassword = async (req, res) => {
         }
         user.password = newPassword;
         await user.save({ validateBeforeSave: false })
+
+        return res.status(200).json({ success: true, message: "Password changed successfully" })
     } catch (error) {
         console.log("Error in change current password", error);
         return res.status(500).json({ success: false, message: "Failed to changed password" })
