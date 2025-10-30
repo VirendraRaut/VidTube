@@ -184,27 +184,34 @@ const getCurrentUser = async (req, res) => {
 }
 
 const updateAccountDetails = async (req, res) => {
-    const { email, username } = req.body;
-    if (!email || !username) {
-        console.log(400, "Email and Username is required");
-        return res.status(400).json({ success: false, message: "Email and Username is required" });
+    try {
+        const { email, username } = req.body;
+        if (!email || !username) {
+            console.log(400, "Email and Username is required");
+            return res.status(400).json({ success: false, message: "Email and Username is required" });
+        }
+
+        const user = await User.findByIdAndUpdate(req.user._id, { $set: { fullName, email: email, } }, { new: true }).select("-password, refreshToken")
+
+        return res.status(200).json({ success: true, message: "User updated successfully", user })
+    } catch (error) {
+        console.log(400, "Error in update account details");
+        return res.status(400).json({ success: false, message: "Failed to update account details" });
     }
-
-    const user = await User.findByIdAndUpdate(req.user._id, { $set: { fullName, email: email, } }, { new: true }).select("-password, refreshToken")
-
-    return res.status(200).json({ success: true, message: "User updated successfully", user })
 
 }
 
 const updateAvatar = async (req, res) => {
     try {
-        const {image } = req.body;
+        const { avatarLocalPath } = req.file?.path;
         if (!image) {
             console.log(400, "Select image first");
             return res.status(400).json({ success: false, message: "Select image first" });
         }
+        const user = await User.findByIdAndUpdate()
     } catch (error) {
-        
+        console.log(400, "Error in update avatar");
+        return res.status(400).json({ success: false, message: "Failed to update avatar" });
     }
 }
 
