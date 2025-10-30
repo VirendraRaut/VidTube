@@ -248,9 +248,12 @@ const updateCoverImage = async (req, res) => {
 
 const userChannelProfile = async (req, res) => {
     try {
-        
+        const { username } = req.params;
+        if (!username) {
+            throw new ApiError(404, "User not found");
+        }
     } catch (error) {
-         console.log(400, "Error in user channel profile");
+        console.log(400, "Error in user channel profile");
         return res.status(400).json({ success: false, message: "Failed to get user channel profile" });
 
     }
