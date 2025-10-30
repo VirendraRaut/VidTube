@@ -142,4 +142,4 @@ const logout = asyncHandler(async (req, res) => {
     }
 })
 
-export { userRegister, loginUser, refreshAccessToken }
+export { userRegister, loginUser, refreshAccessToken, logout }
