@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken"
 import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -106,10 +107,22 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
-     if (!incomingRefreshToken) {
-            throw new ApiError(404, "Refresh Token is required");
-        }
+    if (!incomingRefreshToken) {
+        throw new ApiError(400, "Refresh Token is required");
+    }
 
+    try {
+        const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+        const user = await User.findById(decodedToken?._id);
+         if (!user) {
+            throw new ApiError(401, "Invalid refresh token");
+        }
+        
+
+    } catch (error) {
+
+    }
 })
 
 export { userRegister, loginUser }
