@@ -7,7 +7,9 @@ export const verifyJWT = async (req, _, next) => {
         if (!token) {
             throw new ApiError(400, "Unauthorized access");
         }
-        await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const decodedToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+        await User.findbyId(decodedToken?._id).select("-password -refreshToken")
     } catch (error) {
         console.log("", error);
         return res.status(500).json({ success: false, message: "" })
