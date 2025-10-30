@@ -196,4 +196,16 @@ const updateAccountDetails = async (req, res) => {
 
 }
 
-export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser }
+const updateAvatar = async (req, res) => {
+    try {
+        const {image } = req.body;
+        if (!image) {
+            console.log(400, "Select image first");
+            return res.status(400).json({ success: false, message: "Select image first" });
+        }
+    } catch (error) {
+        
+    }
+}
+
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails }
