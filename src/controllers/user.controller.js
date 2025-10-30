@@ -123,9 +123,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             throw new ApiError(401, "Invalid refresh token");
         }
         const options = {
-        httpOnly: true, secure: process.env.NODE_ENV === "production"
-    }
-    generateAccessAndRefreshToken(user._id);
+            httpOnly: true, secure: process.env.NODE_ENV === "production"
+        }
+        const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshToken(user._id);
     } catch (error) {
 
     }
