@@ -151,7 +151,7 @@ const logout = asyncHandler(async (req, res) => {
 
 const changeCurrentPassword = async (req, res) => {
     try {
-
+        const { oldPassword, newPassword } = req.body;
     } catch (error) {
         console.log("Error in change current password", error);
         return res.status(200).json({ success: false, message: "Failed to changed password" })
