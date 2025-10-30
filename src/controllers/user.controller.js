@@ -84,20 +84,24 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     // validate password
-   const isPasswordCorrect = await user.isPasswordCorrect(password);
+    const isPasswordCorrect = await user.isPasswordCorrect(password);
     if (!isPasswordCorrect) {
-            throw new ApiError(400, "Invalid crendentials");
-        }
+        throw new ApiError(400, "Invalid crendentials");
+    }
 
-    const {accessToken, refreshToen} = await generateAccessAndRefreshToken(user._id);
+    const { accessToken, refreshToen } = await generateAccessAndRefreshToken(user._id);
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
-     if (!loggedInUser) {
-            throw new ApiError(500, "Something went wrong, please try again laten");
-        }
-        const options = {
-            httpOnly: true, secure: process.env.NODE_ENV === "production"
-        }
+    if (!loggedInUser) {
+        throw new ApiError(500, "Something went wrong, please try again laten");
+    }
+    const options = {
+        httpOnly: true, secure: process.env.NODE_ENV === "production"
+    }
+
+    return res
+        .status(201).cookie("accessToken:", accessToken, options).cookie("refreshToken:", refreshToen, options)
+        .json(new ApiResponse(201, createdUser, "User loggedIn successfully"));
 })
 
 export { userRegister }
