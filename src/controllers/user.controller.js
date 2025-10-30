@@ -191,6 +191,9 @@ const updateAccountDetails = async (req, res) => {
     }
 
     const user = await User.findByIdAndUpdate(req.user._id, { $set: { fullName, email: email, } }, { new: true }).select("-password, refreshToken")
+
+    return res.status(200).json({ success: true, message: "User updated successfully", user })
+
 }
 
 export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser }
