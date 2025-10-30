@@ -105,7 +105,8 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
-    const {refreshToen} = req.cookies;
+    const {refreshToken} = req.cookies.refreshToken || req.body.refreshToken;
+
 })
 
 export { userRegister, loginUser }
