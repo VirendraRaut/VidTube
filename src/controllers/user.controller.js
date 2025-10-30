@@ -208,7 +208,7 @@ const updateAvatar = async (req, res) => {
             console.log(400, "Select image first");
             return res.status(400).json({ success: false, message: "Select image first" });
         }
-        const user = await User.findByIdAndUpdate()
+        await uploadOnCloudinary(avatarLocalPath);
     } catch (error) {
         console.log(400, "Error in update avatar");
         return res.status(400).json({ success: false, message: "Failed to update avatar" });
