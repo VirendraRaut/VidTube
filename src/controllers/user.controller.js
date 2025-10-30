@@ -248,4 +248,4 @@ const updateCoverImage = async (req, res) => {
 
 
 
-export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar }
+export { userRegister, loginUser, refreshAccessToken, logout, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage }
