@@ -157,10 +157,11 @@ const changeCurrentPassword = async (req, res) => {
             throw new ApiError(404, "User not found");
         }
         const isPasswordCorrect = user.isPasswordCorrect(oldPassword);
-         if (!isPasswordCorrect) {
+        if (!isPasswordCorrect) {
             throw new ApiError(400, "Invalid password");
         }
         user.password = newPassword;
+        await user.save({ validateBeforeSave: false })
     } catch (error) {
         console.log("Error in change current password", error);
         return res.status(500).json({ success: false, message: "Failed to changed password" })
