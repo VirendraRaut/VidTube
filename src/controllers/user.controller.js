@@ -57,20 +57,37 @@ const userRegister = asyncHandler(async (req, res) => {
 })
 
 const generateAccessAndRefreshToken = async (userId) => {
-   try {
-     const user = await User.findById(userId);
-     if (!user) {
-         throw new ApiError(404, "User not found");
-     }
-     const accessToken = user.generateAccessToken();
-     const refreshToen = user.generateRefreshToken();
- 
-     user.refreshToen = refreshToen;
-     await user.save({ validateBeforeSave: false });
-     return {accessToken, refreshToen}
-   } catch (error) {
-    throw new ApiError(500, "Failed to generate access or refresh token");
-   }
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+        const accessToken = user.generateAccessToken();
+        const refreshToen = user.generateRefreshToken();
+
+        user.refreshToen = refreshToen;
+        await user.save({ validateBeforeSave: false });
+        return { accessToken, refreshToen }
+    } catch (error) {
+        throw new ApiError(500, "Failed to generate access or refresh token");
+    }
 }
+
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        throw new ApiError(400, "Email and Password is mandatory");
+    }
+    const user = await User.findOne({ $or: [{ email }] });
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // validate password
+   const isPasswordCorrect = await user.isPasswordCorrect(password);
+    if (!isPasswordCorrect) {
+            throw new ApiError(400, "Invalid crendentials");
+        }
+})
 
 export { userRegister }
