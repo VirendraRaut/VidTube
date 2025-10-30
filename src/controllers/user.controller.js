@@ -89,7 +89,9 @@ const loginUser = asyncHandler(async (req, res) => {
             throw new ApiError(400, "Invalid crendentials");
         }
 
-    const {accessToken, refreshToen} = await generateAccessAndRefreshToken(user._id)
+    const {accessToken, refreshToen} = await generateAccessAndRefreshToken(user._id);
+
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 })
 
 export { userRegister }
