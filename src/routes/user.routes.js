@@ -23,7 +23,7 @@ userRouter.post("/curret-password", verifyJWT, changeCurrentPassword);
 userRouter.get("/curret", verifyJWT, getCurrentUser);
 userRouter.get("/channel/:username", verifyJWT, getUserChannelProfile);
 userRouter.put("/update-account", verifyJWT, updateAccountDetails);
-userRouter.post("/change-avatar", verifyJWT, updateAvatar);
+userRouter.put("/change-avatar", verifyJWT, upload.single("avatar"), updateAvatar);
 userRouter.post("/change-coverImage", verifyJWT, updateCoverImage);
 
 export default userRouter;
