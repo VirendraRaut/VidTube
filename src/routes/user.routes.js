@@ -5,6 +5,7 @@ import { verifyJWT } from "../middlewares/auth.js";
 
 const userRouter = express.Router();
 
+// unsecure routes
 userRouter.post(
   "/register",
   upload.fields([
@@ -13,12 +14,13 @@ userRouter.post(
   ]),
   userRegister
 );
-
 userRouter.post("/login", loginUser);
+
+// secured routes
 userRouter.post("/logout", verifyJWT, logout);
-userRouter.post("/curret-password", changeCurrentPassword);
-userRouter.post("/update-account", updateAccountDetails);
-userRouter.post("/change-avatar", updateAvatar);
-userRouter.post("/change-coverImae", updateCoverImage);
+userRouter.post("/curret-password", verifyJWT, changeCurrentPassword);
+userRouter.post("/update-account", verifyJWT, updateAccountDetails);
+userRouter.post("/change-avatar", verifyJWT, updateAvatar);
+userRouter.post("/change-coverImae", verifyJWT, updateCoverImage);
 
 export default userRouter;
