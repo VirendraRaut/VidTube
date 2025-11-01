@@ -24,6 +24,6 @@ userRouter.get("/curret", verifyJWT, getCurrentUser);
 userRouter.get("/channel/:username", verifyJWT, getUserChannelProfile);
 userRouter.put("/update-account", verifyJWT, updateAccountDetails);
 userRouter.put("/change-avatar", verifyJWT, upload.single("avatar"), updateAvatar);
-userRouter.post("/change-coverImage", verifyJWT, updateCoverImage);
+userRouter.put("/change-coverImage", verifyJWT, upload.single("coverImage"), updateCoverImage);
 
 export default userRouter;
