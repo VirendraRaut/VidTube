@@ -1,5 +1,5 @@
 import express from "express"
-import { changeCurrentPassword, getCurrentUser, loginUser, logout, updateAccountDetails, updateAvatar, updateCoverImage, userRegister } from "../controllers/user.controller.js"
+import { changeCurrentPassword, getCurrentUser, loginUser, logout, refreshAccessToken, updateAccountDetails, updateAvatar, updateCoverImage, userRegister } from "../controllers/user.controller.js"
 import { upload } from "../middlewares/multer.js";
 import { verifyJWT } from "../middlewares/auth.js";
 
@@ -15,6 +15,7 @@ userRouter.post(
   userRegister
 );
 userRouter.post("/login", loginUser);
+userRouter.post("/refresh-token", refreshAccessToken)
 
 // secured routes
 userRouter.post("/logout", verifyJWT, logout);
