@@ -15,7 +15,7 @@ userRouter.post(
   userRegister
 );
 userRouter.post("/login", loginUser);
-userRouter.post("/refresh-token", refreshAccessToken)
+userRouter.post("/refresh-token", refreshAccessToken);
 
 // secured routes
 userRouter.post("/logout", verifyJWT, logout);
